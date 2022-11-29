@@ -1,0 +1,3 @@
+Commands executed in live during P2P rump on cracking WPA handshakes using airmon-ng
+
+ 
