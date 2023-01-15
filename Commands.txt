@@ -16,19 +16,19 @@ Using the airmon-ng script is the same thing that the following commands:
 
  2-Monitoring traffic
  
-    $sudo airodump wlan0
+    $sudo airodump-ng wlan0
 
 When network is identified, get bssid (wireless network identification) and channel used
 We can now filter our result
 
-    $sudo airodump -c <channel> -d <bssid> wlan0
+    $sudo airodump-ng -c <channel> -d <bssid> wlan0
 
 3-Capture WPA hanshake 
 Two steps are required
 First we will start listening the traffic and specify that we want to save our results in a file
 The file will be used to perform password bruteforce attack. It can also be analyzed using Wireshark
 
-    $sudo airodump -w <PATH/FILENAME> -c <channel> --d <bssid> wlan0
+    $sudo airodump-ng -w <PATH/FILENAME> -c <channel> --d <bssid> wlan0
 
 Second step is to start a desauthentification attack against a connected device to force deconnection
 Once the deconnection is done, there will be a reconnection and so a new hanshake that will be captured by our previous command
